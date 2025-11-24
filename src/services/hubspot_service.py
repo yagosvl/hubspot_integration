@@ -3,6 +3,8 @@ from ..logger_setup import logger
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from hubspot.crm.contacts import BatchInputSimplePublicObjectBatchInputUpsert, SimplePublicObjectBatchInput
 from hubspot import HubSpot
+from urllib3.util.retry import Retry
+
 
 MAX_WORKERS = 10
 BATCH_SIZE = 100
@@ -40,6 +42,11 @@ def create_or_update_contacts(batch_input : list):
     HUBSPOT_ACCESS_TOKEN = os.getenv("HUBSPOT_ACCESS_TOKEN")
     if not HUBSPOT_ACCESS_TOKEN:
         raise OSError("Configuration Error: Hubspot configuration missing.")
-    hs_client = HubSpot(access_token=HUBSPOT_ACCESS_TOKEN)
+    retry_config = Retry(
+        total=5,
+        backoff_factor=10,
+        status_forcelist=(429, 500, 502, 504),
+    )
+    hs_client = HubSpot(access_token=HUBSPOT_ACCESS_TOKEN, retry=retry_config)
     t = BatchInputSimplePublicObjectBatchInputUpsert(inputs=batch_input)
     return hs_client.crm.contacts.batch_api.upsert(t).to_dict()
