@@ -5,9 +5,9 @@ Project to integrate contacts using Hubspot API. The project was develop using P
 
 To run the project you first need to configure 3 enviroment variables:
 
-HUBSPOT_ACCESS_TOKEN
-CONTACS_SERVICE_URL
-CONTACS_SERVICE_TOKEN
+- HUBSPOT_ACCESS_TOKEN
+- CONTACS_SERVICE_URL
+- CONTACS_SERVICE_TOKEN
 
 After that you can run the following comands:
 
