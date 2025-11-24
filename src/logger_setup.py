@@ -1,3 +1,13 @@
 import logging
+import sys
 
-logger = logging.Logger("integrate_contacts_app")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+
+logger = logging.getLogger("integrate_contacts_app")
